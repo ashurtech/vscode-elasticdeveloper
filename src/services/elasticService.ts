@@ -11,10 +11,12 @@ export class ElasticService {
 
     private _host: string;
     private _userAgent: string;
+    private _authorization:string;
 
-    constructor(host:string, userAgent:string) {
+    constructor(host:string, userAgent:string,authorization:string) {
         this._host = host;
         this._userAgent = userAgent;
+        this._authorization = authorization;
 
         if(!this._userAgent) {
             this._userAgent = "elasticdeveloper";
@@ -25,6 +27,7 @@ export class ElasticService {
 
         let host:string;
         let userAgent:string;
+        let authorization:string;
         let q:ElasticsearchQuery;
 
         if(!(query instanceof Object)) {
@@ -36,11 +39,12 @@ export class ElasticService {
         if(environment instanceof Object) {
             host = (environment as Environment).host;
             userAgent = (environment as Environment).userAgent;
+            authorization = (environment as Environment).authorization;
         } else {
             host = environment as string;
         }
 
-        let service = new ElasticService(host, userAgent);
+        let service = new ElasticService(host, userAgent,authorization);
         let response = await service.execute(q);
 
         if(q.hasName) {
@@ -76,7 +80,8 @@ export class ElasticService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': contentType,
-                'User-Agent': this._userAgent
+                'User-Agent': this._userAgent,
+                'Authorization': this._authorization
             }
         };
 
