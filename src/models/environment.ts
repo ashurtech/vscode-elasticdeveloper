@@ -12,6 +12,7 @@ export class Environment extends Entity {
     private _version:Version = null;
     private _host:string;
     private _userAgent:string;
+    private _authorization:string;
     
     public static hydrate(environmentAsObject:any):Environment {
 
@@ -19,6 +20,7 @@ export class Environment extends Entity {
         environment.host = environmentAsObject._host;
         environment.name = environmentAsObject._name;
         environment.userAgent = environmentAsObject._userAgent;
+        environment.authorization = environmentAsObject._authorization;
         environment.version = Version.hydrate(environmentAsObject._version);
 
         return environment;
@@ -85,6 +87,15 @@ export class Environment extends Entity {
         this._userAgent = userAgent;
     }
 
+    
+    public get authorization():string {
+        return this._authorization;
+    }
+
+    public set authorization(authorization:string) {
+        this._authorization = authorization;
+    }
+
     public get hasUserAgent():boolean {
         return (this._userAgent && this._userAgent.length > 0);
     }
@@ -107,6 +118,9 @@ export class Environment extends Entity {
                     break;
                 case "useragent":
                     this.userAgent = textToken.propertyValueToken.text;
+                    break;
+                case "authorization":
+                    this.authorization = textToken.propertyValueToken.text;
                     break;
             }
 
